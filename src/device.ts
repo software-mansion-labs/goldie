@@ -226,6 +226,17 @@ export async function resolveUdid(
   if (isAndroid(key)) return resolveSerial(key, opts);
   const spec = DEVICES[key];
   const byRuntime = await simctlDevices();
+  const pinned = process.env[udidEnvVar(key)];
+  if (pinned) {
+    const known = Object.values(byRuntime).some((devices) =>
+      devices?.some((d) => d.udid === pinned),
+    );
+    if (!known)
+      throw new Error(
+        `${udidEnvVar(key)}=${pinned} is not an installed simulator (xcrun simctl list devices).`,
+      );
+    return pinned;
+  }
   const runtimes = Object.keys(byRuntime)
     .filter((r) => r.includes("iOS"))
     .sort(compareRuntime);
@@ -237,6 +248,14 @@ export async function resolveUdid(
     `No "${spec.simulatorName}" simulator installed. Add one in Xcode > Settings > Components, ` +
       `or run: xcrun simctl create "${spec.simulatorName}" "${spec.simulatorName}"`,
   );
+}
+
+/**
+ * Env var that pins a device key to one simulator, e.g. GOLDIE_UDID_IPHONE_6_9 for "iphone-6.9". For hosts where
+ * simulators are leased from a shared pool under other names, so goldie never looks one up by its model name.
+ */
+export function udidEnvVar(key: DeviceKey): string {
+  return `GOLDIE_UDID_${key.toUpperCase().replace(/[^A-Z0-9]/g, "_")}`;
 }
 
 /** Sorts iOS runtime identifiers newest-first ("...iOS-18-5" before "...iOS-18-3"). */

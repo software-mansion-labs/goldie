@@ -156,7 +156,7 @@ export async function doctor(cfg: LoadedConfig): Promise<boolean> {
         name: `simulator ${spec.simulatorName}`,
         ok: Boolean(udid),
         detail: udid ?? "not installed",
-        fix: `xcrun simctl create "${spec.simulatorName}" "${spec.simulatorName}"`,
+        fix: `xcrun simctl create "${spec.simulatorName}" "${spec.simulatorName}"   (or set ${device.udidEnvVar(key)} to a simulator's UDID)`,
       });
     }
   }
