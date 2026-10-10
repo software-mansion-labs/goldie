@@ -140,6 +140,11 @@ renders the same result. The config also takes:
 
 ## Remarks
 
+- goldie picks the simulator named after the device ("iPhone 17 Pro Max",
+  "iPad Pro 13-inch (M4)"). To use another simulator of the same screen size,
+  for example one leased from a shared pool, set `GOLDIE_UDID_IPHONE_6_9` or
+  `GOLDIE_UDID_IPAD_13` to its UDID.
+
 - Use a Release build. Debug builds paint LogBox banners into the captures.
 - Flows fail when the app changes. Ask the coding agent to repair them, or
   re-record them with argent.
