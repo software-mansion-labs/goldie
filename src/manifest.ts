@@ -174,6 +174,7 @@ export async function writeManifest(cfg: LoadedConfig): Promise<string> {
   for (const key of cfg.devices) {
     if (DEVICES[key].platform !== "android") continue;
     const { image, geom } = deviceFrame(cfg, key);
+    if (!image) continue;
     const url = `frames/${key}${extname(image)}`;
     await copyFile(image, join(webDir, url));
     deviceFrames[key] = { url, geom };

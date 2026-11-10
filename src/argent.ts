@@ -15,8 +15,27 @@ export async function run<T = any>(
   tool: string,
   args: Record<string, Primitive | undefined>,
 ): Promise<T> {
-  return (await client.callTool<T>(tool, args)).data;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return (await client.callTool<T>(tool, args)).data;
+    } catch (err) {
+      // The tool-server prepare() restarts after rebooting a simulator to pin
+      // its locale can miss the client's 15 s ready window while the device is
+      // still settling (seen on the iPhone Duo, about one reboot in three).
+      const slowStart = String((err as Error)?.message ?? err).includes(
+        "Timed out waiting for tools server",
+      );
+      if (!slowStart || attempt >= SERVER_START_ATTEMPTS) throw err;
+      console.log(
+        `    argent tool-server was slow to start, retrying (${attempt}/${SERVER_START_ATTEMPTS - 1})`,
+      );
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+  }
 }
+
+/** Starts of the tool-server to try before giving up, 5 s apart. */
+const SERVER_START_ATTEMPTS = 5;
 
 /** Invoke a tool that returns an image artifact, copying it to `out`. */
 export async function runToFile(

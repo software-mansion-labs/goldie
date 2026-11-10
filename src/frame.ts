@@ -56,6 +56,19 @@ export const FRAMES: Record<DeviceKey, FrameGeometry> = {
     screenRadius: 36,
   },
   "pixel-10-pro": ANDROID_FRAME.geom,
+  // Screen-only devices: only the screen box and corner radius are used.
+  "iphone-duo-outer": {
+    width: 1398,
+    height: 2034,
+    screen: { x: 0, y: 0, width: 1398, height: 2034 },
+    screenRadius: 150,
+  },
+  "iphone-duo-inner": {
+    width: 2007,
+    height: 2853,
+    screen: { x: 0, y: 0, width: 2007, height: 2853 },
+    screenRadius: 120,
+  },
 };
 
 /** The iPhone geometry, which compose() uses when no device is given. */
