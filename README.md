@@ -68,6 +68,14 @@ A preview must run 15 to 30 seconds. Add `"ipad-13"` to `devices` for
 13" iPad screenshots (2064 x 2752) and a 1200 x 1600 preview from the same
 flows, each device with its own bezels, captures and output folder.
 
+For the iPhone Duo, add `"iphone-duo-outer"` (the cover panel, 1398 x 2034)
+and/or `"iphone-duo-inner"` (the inner panel, 2007 x 2853). Both run on the
+"iPhone Duo" simulator: capture folds it closed or open first, and turns it to
+LandscapeLeft for the inner panel, which is what gives the unfolded Duo a
+portrait UI. No Duo bezel is bundled, so both render screen-only, and there is
+no Duo preview yet. Each panel lays most apps out differently, so give each
+its own config and flows, as with the iPad.
+
 Every locale renders from one capture run in the first locale, which suits
 apps whose screens look the same in every language. Set
 `localizedCaptures: true` to capture each locale in its own language instead:
@@ -75,6 +83,12 @@ apps whose screens look the same in every language. Set
 into `out/raw/<device>/<locale>/`, and each locale's screenshots, preview and
 studio view use its own captures. It applies to iOS devices; Android emulators
 keep one shared capture.
+
+A screen that differs by language, such as a menu sorted by localized name,
+can need different taps per locale. Put them in `<flow>_<locale>.yaml` next
+to the flow (for example `add-item_es-MX.yaml`; argent flow names allow
+no dots); capture uses it for that
+locale and the plain flow for every other one.
 
 ## Google Play
 

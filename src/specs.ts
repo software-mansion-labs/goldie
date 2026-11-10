@@ -9,7 +9,12 @@
  *   themselves, with no store constraints enforced.
  */
 
-export type DeviceKey = "iphone-6.9" | "ipad-13" | "pixel-10-pro";
+export type DeviceKey =
+  | "iphone-6.9"
+  | "ipad-13"
+  | "pixel-10-pro"
+  | "iphone-duo-outer"
+  | "iphone-duo-inner";
 
 /**
  * The studio's device-type tabs. Finer than the platform: iPhones and iPads
@@ -58,6 +63,17 @@ export type DeviceSpec = {
    * reads small across the full tile. Default 1.
    */
   copyScale?: number;
+  /**
+   * Foldable iOS simulators only: the hinge posture and device orientation
+   * capture sets before installing the app, after any reboot. `closed` shows
+   * the cover panel, `open` the inner one. On the iPhone Duo the unfolded
+   * panel shows a portrait UI only with the device turned to LandscapeLeft;
+   * in Portrait the capture is the landscape UI turned 90 degrees.
+   */
+  fold?: {
+    posture: "closed" | "open";
+    orientation: "Portrait" | "LandscapeLeft" | "LandscapeRight" | "PortraitUpsideDown";
+  };
 };
 
 export const DEVICES: Record<DeviceKey, DeviceSpec> = {
@@ -93,6 +109,33 @@ export const DEVICES: Record<DeviceKey, DeviceSpec> = {
     // Near the 1280x2856 Pixel screen's aspect, so the cover-crop trims only a
     // sliver; YouTube accepts any portrait size.
     preview: { width: 1080, height: 2400 },
+  },
+  // The iPhone Duo's two panels, as App Store Connect sizes them. Both run on
+  // the one "iPhone Duo" simulator; `fold` picks the panel. No bezel art is
+  // bundled for the Duo, so both render screen-only. No preview pipeline yet.
+  "iphone-duo-outer": {
+    label: "Duo outer",
+    platform: "ios",
+    type: "iphone",
+    simulatorName: "iPhone Duo",
+    native: { width: 1398, height: 2034 },
+    screenshot: { width: 1398, height: 2034 },
+    preview: null,
+    screenOnly: true,
+    copyScale: 1.2,
+    fold: { posture: "closed", orientation: "Portrait" },
+  },
+  "iphone-duo-inner": {
+    label: "Duo inner",
+    platform: "ios",
+    type: "iphone",
+    simulatorName: "iPhone Duo",
+    native: { width: 2007, height: 2853 },
+    screenshot: { width: 2007, height: 2853 },
+    preview: null,
+    screenOnly: true,
+    copyScale: 1.2,
+    fold: { posture: "open", orientation: "LandscapeLeft" },
   },
 };
 

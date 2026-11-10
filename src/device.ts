@@ -230,13 +230,27 @@ export async function resolveUdid(
     .filter((r) => r.includes("iOS"))
     .sort(compareRuntime);
   for (const runtime of runtimes) {
-    const hit = byRuntime[runtime]?.find((d) => d.name === spec.simulatorName);
+    // Prefer a booted one: several simulators can share a name (two "iPhone Duo"s).
+    const named = byRuntime[runtime]?.filter((d) => d.name === spec.simulatorName) ?? [];
+    const hit = named.find((d) => d.state === "Booted") ?? named[0];
     if (hit) return hit.udid;
   }
   throw new Error(
     `No "${spec.simulatorName}" simulator installed. Add one in Xcode > Settings > Components, ` +
       `or run: xcrun simctl create "${spec.simulatorName}" "${spec.simulatorName}"`,
   );
+}
+
+/**
+ * Puts a foldable simulator in the posture and orientation its spec captures
+ * (DeviceSpec.fold). A no-op for every other device. Run after prepare(),
+ * whose reboot would reset both.
+ */
+export async function applyFold(key: DeviceKey, udid: string): Promise<void> {
+  const fold = DEVICES[key].fold;
+  if (!fold) return;
+  await argent.run("fold", { udid, posture: fold.posture });
+  await argent.run("rotate", { udid, orientation: fold.orientation });
 }
 
 /** Sorts iOS runtime identifiers newest-first ("...iOS-18-5" before "...iOS-18-3"). */

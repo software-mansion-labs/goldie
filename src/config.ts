@@ -296,7 +296,7 @@ export async function loadConfig(path = defaultConfigPath()): Promise<LoadedConf
   applyDesign(loaded, readDesign(path));
   // Fail at load time on a bad variant or missing bezel PNG; android devices
   // never load one from cfg.frame (drawn generic bezel or cfg.android.frame).
-  for (const d of loaded.devices) if (DEVICES[d].platform !== "android") framePath(loaded, d);
+  for (const d of loaded.devices) if (usesBezelVariant(d)) framePath(loaded, d);
   validateLayouts(loaded);
   return loaded;
 }
@@ -403,7 +403,7 @@ export function applyDesign(cfg: LoadedConfig, design: DesignOverrides): void {
   }
   if (Object.keys(frames).length > 0) {
     cfg.frame = { variant: { ...configVariants(cfg), ...frames } };
-    for (const d of cfg.devices) if (DEVICES[d].platform !== "android") framePath(cfg, d); // throws on an unknown variant
+    for (const d of cfg.devices) if (usesBezelVariant(d)) framePath(cfg, d); // throws on an unknown variant
   }
   if (design.fontFamily) cfg.theme.fontFamily = design.fontFamily;
   if (design.copy) {
@@ -561,7 +561,12 @@ export function frameVariantFor(cfg: LoadedConfig, device: DeviceKey): FrameVari
     }
     return chosen;
   }
-  return deviceVariants(device)[0]!;
+  return deviceVariants(device)[0] ?? null;
+}
+
+/** Whether a device renders with a bundled iOS bezel variant (not android art, not screen-only). */
+function usesBezelVariant(device: DeviceKey): boolean {
+  return DEVICES[device].platform !== "android" && !DEVICES[device].screenOnly;
 }
 
 /** Absolute path to the bezel PNG the config selects for a device. */
@@ -585,7 +590,9 @@ export function framePath(cfg: LoadedConfig, device: DeviceKey = "iphone-6.9"): 
 export function deviceFrame(
   cfg: LoadedConfig,
   deviceKey: DeviceKey,
-): { image: string; geom: FrameGeometry } {
+): { image: string | null; geom: FrameGeometry } {
+  // A screen-only device has no bezel art; its geometry still sizes the screen.
+  if (DEVICES[deviceKey].screenOnly) return { image: null, geom: FRAMES[deviceKey] };
   if (DEVICES[deviceKey].platform !== "android")
     return { image: framePath(cfg, deviceKey), geom: FRAMES[deviceKey] };
   const custom = cfg.android?.frame;
@@ -604,6 +611,17 @@ export function deviceFrame(
 export function flowPath(cfg: LoadedConfig, flow: string): string {
   const file = flow.endsWith(".yaml") || flow.endsWith(".yml") ? flow : `${flow}.yaml`;
   return resolve(cfg.flowsDir, file);
+}
+
+/**
+ * A scene's flow for one locale: `<flow>_<locale>.yaml` when it exists, else
+ * the flow itself. For screens that differ by language, such as a menu sorted
+ * by localized name, where the same coordinates land on a different item.
+ */
+export function localeFlowPath(cfg: LoadedConfig, flow: string, locale: string): string {
+  const base = flowPath(cfg, flow);
+  const localized = base.replace(/\.ya?ml$/, (ext) => `_${locale}${ext}`);
+  return existsSync(localized) ? localized : base;
 }
 
 export const isPreview = (s: Scene): s is PreviewScene => s.kind === "preview";

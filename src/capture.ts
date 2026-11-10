@@ -6,6 +6,7 @@ import {
   isPreview,
   isScreenshot,
   type LoadedConfig,
+  localeFlowPath,
   type PreviewScene,
 } from "./config.ts";
 import * as device from "./device.ts";
@@ -88,6 +89,8 @@ export async function capture(
   const app = appFor(cfg, deviceKey);
   console.log(`> ${spec.simulatorName ?? spec.label} (${udid}), ${locale}`);
   await device.prepare(deviceKey, udid, locale, cfg.appearance);
+  // Foldables: pick the panel. After prepare, whose reboot resets the hinge.
+  await device.applyFold(deviceKey, udid);
   // A reinstall wipes app data, which is what makes a re-capture deterministic:
   // flows that create records start from the same empty state every run.
   await device.installApp(udid, app.path, app.id);
@@ -105,8 +108,9 @@ export async function capture(
 
   for (const scene of cfg.scenes.filter(isScreenshot)) {
     console.log(`  screenshot ${scene.id}`);
-    const report = await runFlow(flowPath(cfg, scene.flow), udid);
-    if (!report.ok) throw new FlowFailure(scene.id, flowPath(cfg, scene.flow), udid, report);
+    const scenePath = localeFlowPath(cfg, scene.flow, locale);
+    const report = await runFlow(scenePath, udid);
+    if (!report.ok) throw new FlowFailure(scene.id, scenePath, udid, report);
 
     // The flow runner pins and then restores the status bar around a run, so it
     // is re-pinned per capture rather than once at setup. The settle matters:
