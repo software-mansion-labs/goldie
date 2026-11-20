@@ -50,12 +50,54 @@ export const FRAMES: Record<DeviceKey, FrameGeometry> = {
   "iphone-6.9": IPHONE_FRAME,
   /** The ipad-pro-13-* variants. */
   "ipad-13": {
-    width: 2247,
-    height: 2932,
-    screen: { x: 98, y: 104, width: 2046, height: 2730 },
+    width: 2264,
+    height: 2952,
+    screen: { x: 100, y: 100, width: 2064, height: 2752 },
     screenRadius: 36,
   },
   "pixel-10-pro": ANDROID_FRAME.geom,
+  "iphone-16-pro": {
+    width: 1520,
+    height: 3068,
+    screen: { x: 100, y: 251, width: 1320, height: 2717 },
+    screenRadius: 100,
+  },
+  "ipad-air-11": {
+    width: 1880,
+    height: 2600,
+    screen: { x: 120, y: 120, width: 1640, height: 2360 },
+    screenRadius: 40,
+  },
+  "android-tablet-11": {
+    width: 3147,
+    height: 2131,
+    screen: { x: 200, y: 200, width: 2747, height: 1731 },
+    screenRadius: 48,
+  },
+  "galaxy-tab-s11-ultra": {
+    width: 3360,
+    height: 2248,
+    screen: { x: 200, y: 229, width: 2960, height: 1821 },
+    screenRadius: 36,
+  },
+  "pixel-9-pro": {
+    width: 1620,
+    height: 3136,
+    screen: { x: 170, y: 290, width: 1280, height: 2708 },
+    screenRadius: 96,
+  },
+  "macbook-pro-16": {
+    width: 3450,
+    height: 2260,
+    screen: { x: 189, y: 70, width: 3072, height: 1920 },
+    screenRadius: 16,
+  },
+  "browser-window": {
+    width: 1928,
+    height: 1164,
+    screen: { x: 4, y: 80, width: 1920, height: 1080 },
+    screenRadius: 4,
+  },
 };
 
 /** The iPhone geometry, which compose() uses when no device is given. */

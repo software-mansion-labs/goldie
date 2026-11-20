@@ -33,6 +33,7 @@
   },
   "files": [
     "dist/",
+    "assets/*.svg",
     "assets/17-pro-*.png",
     "assets/ipad-pro-13-*.png",
     "assets/pixel-10-pro.webp",

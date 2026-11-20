@@ -16,6 +16,12 @@ Source Project and licensed under the
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), with the
 display rect the skin's `layout` file states punched transparent.
 
+The vector SVG device mockups in `assets/*.svg` (iPad Pro 13, iPad Air 11,
+Android Tablet 11, iPhone 16 Pro, Pixel 9 Pro, MacBook Pro 16, and Browser Windows)
+are inspired by [Meta Design Tools: Devices](https://www.meta.com/design-at-meta/tools/devices/)
+and the DeviceShots editor specification, custom-crafted with vector masks,
+evenodd display cutouts, and dynamic hardware layers.
+
 The rest of goldie is MIT licensed.
 
 ## Fonts

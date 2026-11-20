@@ -1,8 +1,11 @@
 import {
   CameraIcon,
+  GlobeIcon,
+  LaptopIcon,
   type LucideIcon,
   SmartphoneIcon,
   TabletIcon,
+  TabletSmartphoneIcon,
   TriangleAlertIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -27,7 +30,7 @@ import {
 /** Sentinel for the config's own layout sequence, which the studio can show but not edit. */
 export const CUSTOM_TEMPLATE = "__custom__";
 
-const DEVICE_TYPES: DeviceType[] = ["iphone", "ipad", "android"];
+const DEVICE_TYPES: DeviceType[] = ["iphone", "ipad", "tablet", "android", "laptop", "browser"];
 
 /**
  * Shown when a device-type tab is selected but its device is not in the
@@ -55,6 +58,24 @@ const ENABLE_DEVICE_TYPE: Record<
     title: "No Google Play screenshots yet",
     body: "Ask your coding agent to set them up:",
     command: "create Google Play screenshots using goldie",
+  },
+  tablet: {
+    icon: TabletSmartphoneIcon,
+    title: "No Tablet screenshots yet",
+    body: 'Add "ipad-air-11" or "android-tablet-11" to devices in goldie.config.ts:',
+    command: "add tablet screenshots using goldie",
+  },
+  laptop: {
+    icon: LaptopIcon,
+    title: "No Laptop screenshots yet",
+    body: 'Add "macbook-pro-16" to devices in goldie.config.ts:',
+    command: "add laptop screenshots using goldie",
+  },
+  browser: {
+    icon: GlobeIcon,
+    title: "No Browser screenshots yet",
+    body: 'Add "browser-window" to devices in goldie.config.ts:',
+    command: "add browser screenshots using goldie",
   },
 };
 
@@ -261,9 +282,11 @@ function Loaded({ manifest, saved }: { manifest: StoreManifest; saved: SavedDesi
   const captures = deviceCaptures?.byLocale ? deviceCaptures.byLocale[locale] : deviceCaptures;
   const missingLocale = Boolean(deviceCaptures?.byLocale) && !captures;
   const firstVariant = design.frameVariants.find((v) => v.device === device)?.key;
-  const frameUrl = frame
-    ? `frames/${frame}.png`
-    : (design.customFrameUrl ?? `frames/${firstVariant ?? design.frameVariants[0]?.key}.png`);
+  const activeVariantKey = frame || firstVariant || design.frameVariants[0]?.key;
+  const variantObj = design.frameVariants.find((v) => v.key === activeVariantKey);
+  const frameUrl =
+    variantObj?.url ??
+    (frame ? `frames/${frame}.png` : (design.customFrameUrl ?? `frames/${activeVariantKey}.png`));
 
   return (
     <div className="flex h-full bg-stage p-3 text-foreground">

@@ -9,13 +9,23 @@
  *   themselves, with no store constraints enforced.
  */
 
-export type DeviceKey = "iphone-6.9" | "ipad-13" | "pixel-10-pro";
+export type DeviceKey =
+  | "iphone-6.9"
+  | "ipad-13"
+  | "pixel-10-pro"
+  | "iphone-16-pro"
+  | "ipad-air-11"
+  | "android-tablet-11"
+  | "galaxy-tab-s11-ultra"
+  | "pixel-9-pro"
+  | "macbook-pro-16"
+  | "browser-window";
 
 /**
- * The studio's device-type tabs. Finer than the platform: iPhones and iPads
- * share the App Store pipeline but are shown apart.
+ * The studio's device-type tabs. Finer than the platform: iPhones, iPads,
+ * Tablets, Laptops and Browser windows can be browsed separately.
  */
-export type DeviceType = "iphone" | "ipad" | "android";
+export type DeviceType = "iphone" | "ipad" | "android" | "tablet" | "laptop" | "browser";
 
 export type DeviceSpec = {
   /**
@@ -93,6 +103,70 @@ export const DEVICES: Record<DeviceKey, DeviceSpec> = {
     // Near the 1280x2856 Pixel screen's aspect, so the cover-crop trims only a
     // sliver; YouTube accepts any portrait size.
     preview: { width: 1080, height: 2400 },
+  },
+  "iphone-16-pro": {
+    label: "iPhone 16 Pro",
+    platform: "ios",
+    type: "iphone",
+    simulatorName: "iPhone 16 Pro Max",
+    native: { width: 1320, height: 2717 },
+    screenshot: { width: 1320, height: 2717 },
+    preview: { width: 886, height: 1920 },
+  },
+  "ipad-air-11": {
+    label: 'iPad Air 11"',
+    platform: "ios",
+    type: "tablet",
+    simulatorName: "iPad Air 11-inch (M2)",
+    copyScale: 1.2,
+    native: { width: 1640, height: 2360 },
+    screenshot: { width: 1640, height: 2360 },
+    preview: { width: 1116, height: 1600 },
+  },
+  "android-tablet-11": {
+    label: 'Android Tablet 11"',
+    platform: "android",
+    type: "tablet",
+    copyScale: 1.2,
+    native: null,
+    screenshot: { width: 2747, height: 1731 },
+    preview: { width: 1080, height: 1728 },
+  },
+  "galaxy-tab-s11-ultra": {
+    label: "Galaxy Tab S11 Ultra",
+    platform: "android",
+    type: "tablet",
+    copyScale: 1.3,
+    native: null,
+    screenshot: { width: 2960, height: 1821 },
+    preview: { width: 1080, height: 1728 },
+  },
+  "pixel-9-pro": {
+    label: "Pixel 9 Pro",
+    platform: "android",
+    type: "android",
+    avdDeviceNames: ["pixel_9_pro"],
+    native: null,
+    screenshot: { width: 1280, height: 2708 },
+    preview: { width: 1080, height: 2400 },
+  },
+  "macbook-pro-16": {
+    label: 'MacBook Pro 16"',
+    platform: "ios",
+    type: "laptop",
+    copyScale: 1.35,
+    native: { width: 3072, height: 1920 },
+    screenshot: { width: 3072, height: 1920 },
+    preview: null,
+  },
+  "browser-window": {
+    label: "Browser Window",
+    platform: "ios",
+    type: "browser",
+    copyScale: 1.2,
+    native: { width: 1920, height: 1080 },
+    screenshot: { width: 1920, height: 1080 },
+    preview: null,
   },
 };
 

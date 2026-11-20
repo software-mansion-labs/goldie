@@ -12,7 +12,8 @@
       "!node_modules",
       "!studio/node_modules",
       "!studio/dist",
-      "!studio/src/components/ui"
+      "!studio/src/components/ui",
+      "!assets/*.svg"
     ]
   },
   "formatter": {

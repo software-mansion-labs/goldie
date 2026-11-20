@@ -81,7 +81,7 @@ export type StoreManifest = {
     /** The bundled variant each device renders with; null when the config points at custom bezel art. */
     frames: Record<string, string | null>;
     /** Every bundled variant and the device it is drawn for. */
-    frameVariants: Array<{ key: string; device: string }>;
+    frameVariants: Array<{ key: string; device: string; url?: string }>;
     /** Url of the config's custom bezel art; null when bundled variants are used. */
     customFrameUrl: string | null;
     /** Bundled typefaces, with the @font-face sources the studio declares. */
@@ -160,8 +160,15 @@ export async function writeManifest(cfg: LoadedConfig): Promise<string> {
   await mkdir(framesDir, { recursive: true });
   const frameVariants: StoreManifest["design"]["frameVariants"] = [];
   for (const variant of FRAME_VARIANTS) {
-    await copyFile(variantFramePath(variant), join(framesDir, `${variant}.png`));
-    frameVariants.push({ key: variant, device: VARIANT_DEVICE[variant] });
+    const src = variantFramePath(variant);
+    const ext = extname(src);
+    const filename = `${variant}${ext}`;
+    await copyFile(src, join(framesDir, filename));
+    frameVariants.push({
+      key: variant,
+      device: VARIANT_DEVICE[variant],
+      url: `frames/${filename}`,
+    });
   }
   const custom = "variant" in cfg.frame ? null : "frames/custom.png";
   if (custom) await copyFile(framePath(cfg), join(webDir, custom));
@@ -169,10 +176,10 @@ export async function writeManifest(cfg: LoadedConfig): Promise<string> {
   for (const device of cfg.devices) frames[device] = frameVariantFor(cfg, device);
 
   // Bezel art a device brings itself, copied under its device key: the
-  // android Pixel art, which the frame picker does not apply to.
+  // legacy android Pixel art, which the frame picker does not apply to.
   const deviceFrames: Record<string, { url: string; geom: FrameGeometry }> = {};
   for (const key of cfg.devices) {
-    if (DEVICES[key].platform !== "android") continue;
+    if (key !== "pixel-10-pro") continue;
     const { image, geom } = deviceFrame(cfg, key);
     const url = `frames/${key}${extname(image)}`;
     await copyFile(image, join(webDir, url));

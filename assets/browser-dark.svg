@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1928" height="1164" viewBox="0 0 1928 1164">
+  <title>browser dark</title>
+  <defs>
+    <mask id="brCutout-dark">
+      <rect width="1928" height="1164" fill="white" />
+      <rect x="4" y="80" width="1920" height="1080" rx="4" fill="black" />
+    </mask>
+  </defs>
+  <!-- Window Outline & Header -->
+  <rect x="0" y="0" width="1928" height="1164" rx="16" fill="#1e1e22" stroke="#34353a" stroke-width="4" mask="url(#brCutout-dark)" />
+  <!-- Window Header Line Divider -->
+  <line x1="0" y1="78" x2="1928" y2="78" stroke="#34353a" stroke-width="2" />
+  <!-- Traffic Light Buttons -->
+  <circle cx="36" cy="40" r="8" fill="#ff5f56" stroke="#e0443e" stroke-width="1" />
+  <circle cx="62" cy="40" r="8" fill="#ffbd2e" stroke="#dea123" stroke-width="1" />
+  <circle cx="88" cy="40" r="8" fill="#27c93f" stroke="#1aab29" stroke-width="1" />
+  <!-- Address Bar Pill -->
+  <rect x="564" y="20" width="800" height="40" rx="10" fill="#2a2b30" stroke="#34353a" stroke-width="1" />
+  <text x="964" y="45" font-family="-apple-system, system-ui, sans-serif" font-size="14" fill="#8e8f96" text-anchor="middle">lock https://your-awesome-app.com</text>
+</svg>

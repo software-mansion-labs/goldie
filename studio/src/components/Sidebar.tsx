@@ -1,5 +1,7 @@
 import {
   GalleryHorizontalIcon,
+  GlobeIcon,
+  LaptopIcon,
   LayoutGridIcon,
   type LucideIcon,
   MoonIcon,
@@ -7,6 +9,7 @@ import {
   SmartphoneIcon,
   SunIcon,
   TabletIcon,
+  TabletSmartphoneIcon,
 } from "lucide-react";
 import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
 import type { ReactNode } from "react";
@@ -33,7 +36,10 @@ import type { StripView } from "./Strip";
 const DEVICE_TYPES: Array<{ key: DeviceType; icon: LucideIcon; label: string }> = [
   { key: "iphone", icon: SmartphoneIcon, label: "iPhone" },
   { key: "ipad", icon: TabletIcon, label: "iPad" },
+  { key: "tablet", icon: TabletSmartphoneIcon, label: "Tablet" },
   { key: "android", icon: PlayIcon, label: "Android" },
+  { key: "laptop", icon: LaptopIcon, label: "Laptop" },
+  { key: "browser", icon: GlobeIcon, label: "Browser" },
 ];
 
 /**

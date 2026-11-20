@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3450" height="2260" viewBox="0 0 3450 2260">
+  <title>macbook pro 16 space black</title>
+  <defs>
+    <linearGradient id="mbLid-space-black" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#28292d" />
+      <stop offset="100%" stop-color="#161719" />
+    </linearGradient>
+    <linearGradient id="mbDeck-space-black" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38393e" />
+      <stop offset="100%" stop-color="#1a1b1d" />
+    </linearGradient>
+    <mask id="mbCutout-space-black">
+      <rect width="3450" height="2260" fill="white" />
+      <rect x="189" y="70" width="3072" height="1920" rx="16" fill="black" />
+    </mask>
+  </defs>
+  <!-- Display Lid Bezel -->
+  <rect x="140" y="30" width="3170" height="2000" rx="36" fill="url(#mbLid-space-black)" mask="url(#mbCutout-space-black)" />
+  <!-- Display Glass Bezel Ring -->
+  <rect x="156" y="46" width="3138" height="1968" rx="24" fill="#08080a" mask="url(#mbCutout-space-black)" />
+  <!-- Camera Notch in Display -->
+  <path d="M 1625,70 H 1825 V 104 A 12,12 0 0 1 1813,116 H 1637 A 12,12 0 0 1 1625,104 Z" fill="#000000" />
+  <circle cx="1725" cy="92" r="6" fill="#121316" />
+  <!-- Laptop Keyboard Base / Deck -->
+  <path d="M 0,2030 C 0,2030 60,2030 140,2030 L 3310,2030 C 3390,2030 3450,2030 3450,2030 L 3410,2230 C 3400,2250 3380,2260 3350,2260 L 100,2260 C 70,2260 50,2250 40,2230 Z" fill="url(#mbDeck-space-black)" />
+  <!-- Trackpad Opening Notch / Thumb Groove -->
+  <rect x="1545" y="2030" width="360" height="18" rx="9" fill="#111214" />
+</svg>
