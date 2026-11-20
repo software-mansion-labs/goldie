@@ -15,13 +15,36 @@ import {
 } from "./layouts.ts";
 import { DEVICE_KEYS, DEVICES, type DeviceKey, isDeviceKey } from "./specs.ts";
 
-/** Bezel art bundled in goldie's own assets/, one PNG per variant, each drawn for one device. */
+/** Bezel art bundled in goldie's own assets/, one PNG/SVG per variant, each drawn for one device. */
 export const FRAME_VARIANTS = [
   "17-pro-silver",
   "17-pro-blue",
   "17-pro-orange",
   "ipad-pro-13-silver",
   "ipad-pro-13-space-gray",
+  "ipad-pro-13-space-black",
+  // SVG variants - Tablets
+  "ipad-air-11-space-gray",
+  "ipad-air-11-starlight",
+  "ipad-air-11-blue",
+  "ipad-air-11-purple",
+  "android-tablet-porcelain",
+  "android-tablet-hazel",
+  "galaxy-tab-s11-ultra",
+  // SVG variants - Phones
+  "iphone-16-pro-natural",
+  "iphone-16-pro-desert",
+  "iphone-16-pro-black",
+  "iphone-16-pro-white",
+  "pixel-9-pro-obsidian",
+  "pixel-9-pro-porcelain",
+  "pixel-9-pro-hazel",
+  // SVG variants - Laptops
+  "macbook-pro-16-space-black",
+  "macbook-pro-16-silver",
+  // SVG variants - Browser Windows
+  "browser-light",
+  "browser-dark",
 ] as const;
 export type FrameVariant = (typeof FRAME_VARIANTS)[number];
 
@@ -31,6 +54,25 @@ export const VARIANT_DEVICE: Record<FrameVariant, DeviceKey> = {
   "17-pro-orange": "iphone-6.9",
   "ipad-pro-13-silver": "ipad-13",
   "ipad-pro-13-space-gray": "ipad-13",
+  "ipad-pro-13-space-black": "ipad-13",
+  "ipad-air-11-space-gray": "ipad-air-11",
+  "ipad-air-11-starlight": "ipad-air-11",
+  "ipad-air-11-blue": "ipad-air-11",
+  "ipad-air-11-purple": "ipad-air-11",
+  "android-tablet-porcelain": "android-tablet-11",
+  "android-tablet-hazel": "android-tablet-11",
+  "galaxy-tab-s11-ultra": "galaxy-tab-s11-ultra",
+  "iphone-16-pro-natural": "iphone-16-pro",
+  "iphone-16-pro-desert": "iphone-16-pro",
+  "iphone-16-pro-black": "iphone-16-pro",
+  "iphone-16-pro-white": "iphone-16-pro",
+  "pixel-9-pro-obsidian": "pixel-9-pro",
+  "pixel-9-pro-porcelain": "pixel-9-pro",
+  "pixel-9-pro-hazel": "pixel-9-pro",
+  "macbook-pro-16-space-black": "macbook-pro-16",
+  "macbook-pro-16-silver": "macbook-pro-16",
+  "browser-light": "browser-window",
+  "browser-dark": "browser-window",
 };
 
 /** The variants drawn for a device, the first one its default. */
@@ -530,8 +572,12 @@ export function backgroundLuminance(css: string): number | null {
 
 const GOLDIE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Absolute path to a bundled bezel variant's PNG. */
+/** Absolute path to a bundled bezel variant's PNG or SVG. */
 export function variantFramePath(variant: FrameVariant): string {
+  const svg = resolve(GOLDIE_ROOT, "assets", `${variant}.svg`);
+  if (existsSync(svg)) return svg;
+  const webp = resolve(GOLDIE_ROOT, "assets", `${variant}.webp`);
+  if (existsSync(webp)) return webp;
   return resolve(GOLDIE_ROOT, "assets", `${variant}.png`);
 }
 
@@ -586,15 +632,16 @@ export function deviceFrame(
   cfg: LoadedConfig,
   deviceKey: DeviceKey,
 ): { image: string; geom: FrameGeometry } {
-  if (DEVICES[deviceKey].platform !== "android")
-    return { image: framePath(cfg, deviceKey), geom: FRAMES[deviceKey] };
-  const custom = cfg.android?.frame;
-  if (custom) {
-    const image = resolve(cfg.root, custom.image);
-    if (!existsSync(image)) throw new Error(`Frame image not found: ${image}`);
-    return { image, geom: custom };
+  if (deviceKey === "pixel-10-pro") {
+    const custom = cfg.android?.frame;
+    if (custom) {
+      const image = resolve(cfg.root, custom.image);
+      if (!existsSync(image)) throw new Error(`Frame image not found: ${image}`);
+      return { image, geom: custom };
+    }
+    return { image: resolve(GOLDIE_ROOT, "assets", ANDROID_FRAME.file), geom: ANDROID_FRAME.geom };
   }
-  return { image: resolve(GOLDIE_ROOT, "assets", ANDROID_FRAME.file), geom: ANDROID_FRAME.geom };
+  return { image: framePath(cfg, deviceKey), geom: FRAMES[deviceKey] };
 }
 
 /**

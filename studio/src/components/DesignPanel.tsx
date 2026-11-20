@@ -124,6 +124,37 @@ const FRAME_META: Record<string, { label: string; tint: string }> = {
   "17-pro-orange": { label: "Cosmic Orange", tint: "#E0662F" },
   "ipad-pro-13-silver": { label: "Silver", tint: "#D8D9DD" },
   "ipad-pro-13-space-gray": { label: "Space Gray", tint: "#53565A" },
+  "ipad-pro-13-space-black": { label: "Space Black", tint: "#28292C" },
+
+  // iPad Air 11 (Tablet)
+  "ipad-air-11-space-gray": { label: "Space Gray", tint: "#44464A" },
+  "ipad-air-11-starlight": { label: "Starlight", tint: "#EBE6DB" },
+  "ipad-air-11-blue": { label: "Sky Blue", tint: "#98B7C7" },
+  "ipad-air-11-purple": { label: "Light Purple", tint: "#B5AFC9" },
+
+  // Android Tablet 11 (Tablet)
+  "android-tablet-porcelain": { label: "Porcelain White", tint: "#F2F0EB" },
+  "android-tablet-hazel": { label: "Hazel Green", tint: "#575E58" },
+  "galaxy-tab-s11-ultra": { label: "Graphite Black", tint: "#2B2C30" },
+
+  // iPhone 16 Pro (Phone)
+  "iphone-16-pro-natural": { label: "Natural Titanium", tint: "#98948D" },
+  "iphone-16-pro-desert": { label: "Desert Titanium", tint: "#C2AB95" },
+  "iphone-16-pro-black": { label: "Black Titanium", tint: "#323335" },
+  "iphone-16-pro-white": { label: "White Titanium", tint: "#F2F2F4" },
+
+  // Pixel 9 Pro (Phone)
+  "pixel-9-pro-obsidian": { label: "Obsidian Black", tint: "#323438" },
+  "pixel-9-pro-porcelain": { label: "Porcelain", tint: "#EAE8E3" },
+  "pixel-9-pro-hazel": { label: "Hazel", tint: "#697268" },
+
+  // MacBook Pro 16 (Laptop)
+  "macbook-pro-16-space-black": { label: "Space Black", tint: "#28292D" },
+  "macbook-pro-16-silver": { label: "Silver", tint: "#E4E5E9" },
+
+  // Browser Window
+  "browser-light": { label: "Clean Window (Light)", tint: "#F1F2F5" },
+  "browser-dark": { label: "Clean Window (Dark)", tint: "#1E1E22" },
 };
 
 /** The studio's "System" font choice; mirrors SYSTEM_FONT in src/fonts.ts. */

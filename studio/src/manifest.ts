@@ -34,7 +34,7 @@ export type FrameGeometry = {
 };
 
 /** Mirrors DeviceType in src/specs.ts: the sidebar's device-type tabs. */
-export type DeviceType = "iphone" | "ipad" | "android";
+export type DeviceType = "iphone" | "ipad" | "android" | "tablet" | "laptop" | "browser";
 
 export type DeviceEntry = {
   key: string;
@@ -78,7 +78,7 @@ export type Design = {
   /** The bundled variant each device renders with; null when the config points at custom bezel art. */
   frames: Record<string, string | null>;
   /** Every bundled variant and the device it is drawn for. */
-  frameVariants: Array<{ key: string; device: string }>;
+  frameVariants: Array<{ key: string; device: string; url?: string }>;
   customFrameUrl: string | null;
   /** Bundled typefaces with the @font-face sources to declare. */
   fonts: BundledFont[];
